@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,11 +12,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionalHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionalHandler.class);
-
     @ExceptionHandler(RequestNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleRequestNotFoundException(RequestNotFoundException ex) {    
-        log.warn("RequestNotFoundException: {}", ex.getMessage());
 
         Map<String, Object> errorDetails = new LinkedHashMap<>();
         errorDetails.put("timestamp", LocalDateTime.now());
@@ -31,8 +26,7 @@ public class GlobalExceptionalHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGenericException(Exception ex) {
-        log.error("Unhandled exception occurred: ", ex);
-
+        
         Map<String, Object> errorDetails = new LinkedHashMap<>();
         errorDetails.put("timestamp", LocalDateTime.now());
         errorDetails.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
